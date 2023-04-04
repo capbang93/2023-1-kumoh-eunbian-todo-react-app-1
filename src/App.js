@@ -25,6 +25,16 @@ class App extends React.Component {
         this.setState({items: thisItems});
     }
 
+    // delete 함수
+    delete=(item)=>{
+        const thisItems = this.state.items;
+        const newItems = thisItems.filter(e=>e.id!==item.id);
+        this.setState({items: newItems},()=>{
+            // 디버깅 콜백
+            console.log("Update Items : ", this.state.items);
+        });
+    }
+
     render(){
         // 자바스크립트가 제공하는 map 함수를 이용해서 배열을 반복해 <Todo /> 컴포넌트를 여러 개 생성
 
@@ -32,7 +42,7 @@ class App extends React.Component {
             <Paper style={{margin:16}}>
                 <List>
                     {this.state.items.map((item, idx)=>(
-                        <Todo item={item} ket={item.id} />
+                        <Todo item={item} ket={item.id} delte={this.delete} />
                     ))}
                 </List>
             </Paper>
