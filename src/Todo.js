@@ -8,7 +8,8 @@ class Todo extends React.Component {
         this.state={
             item: props.item, readOnly:true
         };
-        this.delete=props.delete;
+        this.delete = props.delete;
+        this.update = props.update;
     }
 
     deleteEventHandler=()=>{
@@ -23,6 +24,7 @@ class Todo extends React.Component {
     enterKeyEventHandler=(e)=>{
         if(e.key==="Enter"){
             this.setState({readOnly:true});
+            this.update(this.state.item);
         }
     }
 
@@ -35,7 +37,8 @@ class Todo extends React.Component {
     checkboxEventHandler=(e)=>{
         const thisItem = this.state.item;
         thisItem.done   = thisItem.done? false: true;
-        this.setState({item: thisItem});
+        this.setState({readOnly:true});
+        this.update(this.state.item);
     }
 
     render(){
