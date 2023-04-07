@@ -6,12 +6,12 @@ import AddTodo from "./AddTodo";
 import { call, signout } from "./service/ApiService";
 import { Button,  Grid, Typography, Toolbar } from '@material-ui/core';
 const App = ()=>{ 
-    const [items, setItems] = useState([""]);
+    const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchTodos(); 
-    },[]);
+    },[items]);
 
   const fetchTodos = ()=> {
     console.log(" fetchTodos 호출");
