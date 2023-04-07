@@ -1,20 +1,22 @@
 import React, {useState, useEffect} from "react";
-import ReactDOM from "react-dom";
 import './App.css';
 import Todo from "./Todo";
 import {Paper, List, Container, AppBar} from "@material-ui/core";
 import AddTodo from "./AddTodo";
 import { call, signout } from "./service/ApiService";
-import { Button,  Grid, TextField, Typography, Toolbar } from '@material-ui/core';
+import { Button,  Grid, Typography, Toolbar } from '@material-ui/core';
 const App = ()=>{ 
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState([""]);
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        fetchUsers();
-    }, [items]);
 
-  const fetchUsers = async (currentPage) => {
+    useEffect(() => {
+        fetchTodos(); 
+    },[]);
+
+  const fetchTodos = ()=> {
+    console.log(" fetchTodos 호출");
     call("/todo","GET",null).then((response)=>{
+        console.log(" response ");
            setItems(response.data);
            setLoading(false);
         });
@@ -23,7 +25,7 @@ const App = ()=>{
     // add 함수 -> item 추가 함수
    const add=(item)=>{
         call("/todo","POST",item).then((response)=>{
-            setItems(response.data);
+            setItems(...response.data);
         })
     };
 
@@ -39,6 +41,14 @@ const App = ()=>{
         call("/todo","PUT",item).then((response)=>{
             setItems(response.data);
         })
+    };
+
+    // 일괄 삭제
+    const completedDelte=(e)=>{
+        // items 중 체크된(done이 true인) 애들 삭제
+        items.filter(item=>item.done===true).map((item,index)=>{
+            deleteItems(item);
+       });
     };
 
 
@@ -76,6 +86,9 @@ const App = ()=>{
                 <Container maxWidth="md">
                     <AddTodo add={add} />
                     <div className="TodoList">{todoItems}</div>
+                    <Button onClick={(e)=>completedDelte(e)}>
+                        <p>Delete Completed Item</p>
+                    </Button>
                 </Container>
             </div>
         );
